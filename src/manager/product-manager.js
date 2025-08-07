@@ -31,6 +31,7 @@ class ProductManager{
             products.push(newProduct);
     
             await fs.promises.writeFile(this.path, JSON.stringify(products));
+            return newProduct;
         } catch (error) {
             throw error;
         }
@@ -50,6 +51,7 @@ class ProductManager{
 
             renewProducts.push(existingProduct);
             await fs.promises.writeFile(this.path, JSON.stringify(renewProducts));
+            return existingProduct;
         } catch (error) {
             throw error;
         }
@@ -82,6 +84,7 @@ class ProductManager{
                 const seekProduct = await this.getProductById(pid);
                 const renewProducts = seekProduct.filter((product) => product.pid !== pid);
                 await fs.promises.writeFile(this.path, JSON.stringify(renewProducts));
+                return seekProduct;
             }
         } catch (error) {
             throw error
