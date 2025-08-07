@@ -10,17 +10,13 @@ class ProductManager{
 
     async addProduct(product){
 
-        const { title, description, code, price, status, stock, category, thumbnail } = product;
-
-        if (!title || !description || !code || !price || !status || !stock || !category || !thumbnail ) return "No se registró correctamente el ingreso de toda la información necesaria, intente nuevamente";
-        
-        const products = await this.getProducts();
-
-        const actualPid = products.length > 0 ? Math.max(...products.map(product => product.pid)) : 0; //Busco máximo ID en array contenedor products para referencia en nuevo producto si fuera necesario
-
-        const existingCode = products.find((product) => product.code === code);
-
-        if (!existingCode){
+        try {
+            const { title, description, code, price, status, stock, category, thumbnail } = product;
+            if (!title || !description || !code || !price || !status || !stock || !category || !thumbnail ) return "No se registró correctamente el ingreso de toda la información necesaria, intente nuevamente";
+    
+            const products = await this.getProducts();
+            const actualPid = products.length > 0 ? Math.max(...products.map(product => product.pid)) : 0; //Busco máximo ID en array contenedor products para referencia en nuevo producto si fuera necesario
+            
             const newProduct = {
                 pid: actualPid + 1,
                 title: title,
@@ -33,10 +29,30 @@ class ProductManager{
                 thumbnail: thumbnail,
             };
             products.push(newProduct);
-        }else{
-            existingCode.stock += stock;
+    
+            await fs.promises.writeFile(this.path, JSON.stringify(products));
+        } catch (error) {
+            throw error;
         }
-        await fs.promises.writeFile(this.path, JSON.stringify(products))
+    }
+
+    async updateProduct(product, pid){
+        
+        try {
+            const { title, description, code, price, status, stock, category, thumbnail } = product;
+            if (!title || !description || !code || !price || !status || !stock || !category || !thumbnail ) return "No se registró correctamente el ingreso de toda la información necesaria, intente nuevamente";
+    
+            const products = await this.getProducts();
+            let existingProduct = await this.getProductById(pid);
+
+            existingProduct = { ...existingProduct, ...product };
+            const renewProducts = products.filter((product) => product.pid !== pid);
+
+            renewProducts.push(existingProduct);
+            await fs.promises.writeFile(this.path, JSON.stringify(renewProducts));
+        } catch (error) {
+            throw error;
+        }
     }
 
     async getProducts(){
@@ -52,12 +68,23 @@ class ProductManager{
         try {
             const products = await this.getProducts();
             const filteredProduct = products.find((product) => product.pid === Number(pid));
-            console.log(pid);
-            console.log(filteredProduct);
             if(!filteredProduct) throw new Error("No se ha encontrado un producto con el ID solicitado"); 
             return filteredProduct;
         } catch (error) {
             throw error;
+        }
+    }
+
+    async deleteProduct(pid){
+        try {
+            const product = await this.getProducts();
+            if (product.length > 0){
+                const seekProduct = await this.getProductById(pid);
+                const renewProducts = seekProduct.filter((product) => product.pid !== pid);
+                await fs.promises.writeFile(this.path, JSON.stringify(renewProducts));
+            }
+        } catch (error) {
+            throw error
         }
     }
 
