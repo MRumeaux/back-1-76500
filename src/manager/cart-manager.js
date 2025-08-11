@@ -54,6 +54,15 @@ class CartManager {
             existingCartProduct = { ...existingCartProduct, ...cart };
             const renewCart = cart.filter((product) => product.pid !== pid);
 
+            if (!existingCartProduct) 
+            {
+            const newProduct = {
+                id: this.id++,
+                title
+                }
+            this.products.push(newProduct)
+            }
+
             renewCart.push(existingCartProduct);
             await fs.promises.writeFile(this.path, JSON.stringify(renewCart));
             return existingCartProduct;
