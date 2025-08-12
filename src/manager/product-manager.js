@@ -59,11 +59,14 @@ class ProductManager{
 
     async getProducts(){
         
-        if(fs.existsSync(this.path)){
-            const products = await fs.promises.readFile(this.path, "utf-8");
-            return JSON.parse(products);
-        } return [];
-
+        try {
+            if(fs.existsSync(this.path)){
+                const products = await fs.promises.readFile(this.path, "utf-8");
+                return JSON.parse(products);
+            } return [];
+        } catch (error) {
+            throw error;
+        }
     }
 
     async getProductById(pid){
