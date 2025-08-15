@@ -11,8 +11,8 @@ class ProductManager{
     async addProduct(product){
 
         try {
-            const { title, description, code, price, status, stock, category, thumbnail } = product;
-            if (!title || !description || !code || !price || !status || !stock || !category || !thumbnail ) return "No se registró correctamente el ingreso de toda la información necesaria, intente nuevamente";
+            const { title, description, code, price, status, stock, category, thumbnails } = product;
+            if (!title || !description || !code || price == null || status == null || stock == null || !category || !thumbnails ) return "No se registró correctamente el ingreso de toda la información necesaria, intente nuevamente"; // A price, status y stock los dejo con la comparativa null, más pensando en realidad por status, ya que al permitir valor booleano puedo romper la ejecución en la lógica de validación si no apunto al null 
     
             const products = await this.getProducts();
             const actualPid = products.length > 0 ? Math.max(...products.map(product => product.pid)) : 0; //Busco máximo ID en array contenedor products para referencia en nuevo producto si fuera necesario
@@ -26,7 +26,7 @@ class ProductManager{
                 status: status,
                 stock: stock,
                 category: category,
-                thumbnail: thumbnail,
+                thumbnails: thumbnails,
             };
             products.push(newProduct);
     
@@ -40,14 +40,14 @@ class ProductManager{
     async updateProduct(product, pid){
         
         try {
-            const { title, description, code, price, status, stock, category, thumbnail } = product;
-            if (!title || !description || !code || !price || !status || !stock || !category || !thumbnail ) return "No se registró correctamente el ingreso de toda la información necesaria, intente nuevamente";
+            const { title, description, code, price, status, stock, category, thumbnails } = product;
+            if (!title || !description || !code || price == null || status == null || stock == null || !category || !thumbnails ) return "No se registró correctamente el ingreso de toda la información necesaria, intente nuevamente"; // A price, status y stock los dejo con la comparativa null, más pensando en realidad por status, ya que al permitir valor booleano puedo romper la ejecución en la lógica de validación si no apunto al null 
     
             const products = await this.getProducts();
             let existingProduct = await this.getProductById(pid);
 
-            existingProduct = { ...existingProduct, ...product };
-            const renewProducts = products.filter((product) => product.pid !== pid);
+            existingProduct = { pid: existingProduct.pid , ...product };
+            const renewProducts = products.filter((product) => product.pid !== Number(pid));
 
             renewProducts.push(existingProduct);
             await fs.promises.writeFile(this.path, JSON.stringify(renewProducts));
@@ -85,7 +85,7 @@ class ProductManager{
             const product = await this.getProducts();
             if (product.length > 0){
                 const seekProduct = await this.getProductById(pid);
-                const renewProducts = seekProduct.filter((product) => product.pid !== pid);
+                const renewProducts = product.filter((product) => product.pid !== Number(pid));
                 await fs.promises.writeFile(this.path, JSON.stringify(renewProducts));
                 return seekProduct;
             }

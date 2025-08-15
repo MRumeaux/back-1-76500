@@ -1,9 +1,9 @@
 import { Router } from "express";
-import { productManager } from "../src/manager/product-manager.js";
+import { productManager } from "../manager/product-manager.js";
 
 const productRouter = Router();
 
-router.get('/', async(req, res, next)=> {
+productRouter.get('/', async(req, res, next)=> {
     try {
         const products = await productManager.getProducts();
         res.status(200).json(products);
@@ -12,7 +12,7 @@ router.get('/', async(req, res, next)=> {
     }
 })
 
-router.get('/:pid', async(req, res, next) => {
+productRouter.get('/:pid', async(req, res, next) => {
     try {
         const {pid} = req.params;
         const seekedProduct = await productManager.getProductById(pid);
@@ -22,7 +22,7 @@ router.get('/:pid', async(req, res, next) => {
     }
 })
 
-router.post('/', async(req, res, next) => {
+productRouter.post('/', async(req, res, next) => {
     try {
         const product = await productManager.addProduct(req.body);
         res.status(201).json(product);
@@ -31,7 +31,7 @@ router.post('/', async(req, res, next) => {
     }
 })
 
-router.put('/:pid', async(req, res, next) => {
+productRouter.put('/:pid', async(req, res, next) => {
     try {
         const {pid} = req.params;
         const updatedProduct = await productManager.updateProduct(req.body, pid);
@@ -41,7 +41,7 @@ router.put('/:pid', async(req, res, next) => {
     }
 })
 
-router.delete('/:pid', async(req, res, next) => {
+productRouter.delete('/:pid', async(req, res, next) => {
     try {
         const {pid} = req.params;
         const deletedProduct = await productManager.deleteProduct(pid);

@@ -1,6 +1,5 @@
 import fs from "fs"
-import { productManager } from ".product-manager.js";
-import { error } from "console";
+import { productManager } from "./product-manager.js";
 
 const path = "./src/data/cart.json"
 
@@ -10,7 +9,7 @@ class CartManager {
         this.path = path
     }
 
-    async getCart(){
+    async getCarts(){
         try {
             if(fs.existsSync(this.path)){
                 const cart = await fs.promises.readFile(this.path, "utf-8");
@@ -23,7 +22,7 @@ class CartManager {
     
     async createCart(){
         try {
-            const cart = await this.getCart();
+            const cart = await this.getCarts();
             
             const actualCid = cart.length > 0 ? Math.max(...cart.map(cartProduct => cartProduct.cid)) : 0; //Busco máximo ID en array contenedor products para referencia en nuevo producto si fuera necesario
             
@@ -42,9 +41,9 @@ class CartManager {
 
     async getProductInCartById(cid){
         try {
-            const cart = await this.getCart();
+            const cart = await this.getCarts();
             const filteredCart = cart.find((cart) => cart.cid === Number(cid));
-            if(!filteredCart) throw new Error("No se ha encontrado un producto en el carrito con el ID solicitado"); 
+            if(!filteredCart) throw new Error("No se ha encontrado un carrito con el ID solicitado"); 
             return filteredCart;
         } catch (error) {
             throw error;
@@ -55,28 +54,28 @@ class CartManager {
             
         try {
     
-            const cart = await this.getCart();
+            const cart = await this.getCarts();
 
             let existingProduct = await productManager.getProductById(pid);
             if (!existingProduct) return `No se encontró el producto id ${pid}`
             
-            const filteredCart = cart.find((cart) => cart.cid === Number(cid));
-            if (!filteredCart) return `No se encontró el cart id ${cid}`
+            const seekedCart = cart.find((cart) => cart.cid === Number(cid));
+            if (!seekedCart) return `No se encontró el cart id ${cid}`
 
-            const productInCart = filteredCart.products.find((product) => product.pid === Number(pid));
+            const productInCart = seekedCart.products.find((product) => product.pid === Number(pid));
 
             if (!productInCart){
                 const newProductInCart = {
                     pid: Number(pid),
                     quantity: 1
                 }
-                filteredCart.products.push(newProductInCart);
+                seekedCart.products.push(newProductInCart);
             } else {
                 productInCart.quantity += 1
             }
 
             await fs.promises.writeFile(this.path, JSON.stringify(cart));
-            return filteredCart;
+            return seekedCart;
         } catch (error) {
             throw error;
         }

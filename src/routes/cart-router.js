@@ -1,19 +1,19 @@
 import { Router } from "express";
-import { cartManager } from "../src/manager/cart-manager.js";
+import { cartManager } from "../manager/cart-manager.js";
 
 const cartRouter = Router();
 
-router.post("/", async (req, res, next) => {
+cartRouter.post("/", async (req, res, next) => {
     try {
         const cart = await cartManager.createCart();
-        res.status(200).json(cart);
+        res.status(201).json(cart);
     } catch (error) {
         next(error)
     }
 
 });
 
-router.get("/:cid", async (req, res, next) => {
+cartRouter.get("/:cid", async (req, res, next) => {
 
     try {
         const {cid} = req.params;
@@ -24,12 +24,12 @@ router.get("/:cid", async (req, res, next) => {
     }
 });
 
-router.post("/:cid/product/:pid", async (req, res, next) => {
+cartRouter.post("/:cid/product/:pid", async (req, res, next) => {
 
     try {
-        const { cid } = req.params;
-        const { pid } = req.params;
-        await cartManager.addProductToCart(cid, pid);
+        const { cid, pid } = req.params;
+        const postedProductInCart = await cartManager.addProductToCart(cid, pid);
+        res.status(201).json(postedProductInCart);
     } catch (error) {
         next(error)
     }
