@@ -19,7 +19,7 @@ app.set('view engine', 'handlebars');
 
 app.use('/api/products', productRouter);
 app.use('/api/carts', cartRouter);
-app.use('/api/', productList);
+app.use('/api/realtimeproducts', productList);
 
 app.use(errorHandler);
 
@@ -29,8 +29,13 @@ const socketServer = new Server(httpServer);
 
 socketServer.on('connection', (socket) => {
 
+    console.log(`Usuario conectado ${socket.id}`)
     socket.on('disconnect', () => {
+        console.log(`Usuario desconectado`)
+    })
 
+    socket.on('newProd', (prod) => {
+        socketServer.emit('products', acaVaAlgoADeterminar)
     })
 
 })
