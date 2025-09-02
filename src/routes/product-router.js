@@ -26,6 +26,8 @@ productRouter.post('/', async(req, res, next) => {
     try {
         const product = await productManager.addProduct(req.body);
         res.status(201).json(product);
+        const socket = req.app.get("socket");
+        socket.emit('productsUpdated', product)
     } catch (error) {
         next(error);
     }
@@ -36,6 +38,8 @@ productRouter.put('/:pid', async(req, res, next) => {
         const {pid} = req.params;
         const updatedProduct = await productManager.updateProduct(req.body, pid);
         res.status(200).json(updatedProduct);
+        const socket = req.app.get("socket");
+        socket.emit('productsUpdated', updatedProduct)
     } catch (error) {
         next(error);
     }
@@ -46,6 +50,8 @@ productRouter.delete('/:pid', async(req, res, next) => {
         const {pid} = req.params;
         const deletedProduct = await productManager.deleteProduct(pid);
         res.status(200).json(deletedProduct);
+        const socket = req.app.get("socket");
+        socket.emit('productsUpdated', deletedProduct)
     } catch (error) {
         next(error);
     }

@@ -1,24 +1,25 @@
 import { Router } from "express";
 import { productManager } from "../manager/product-manager.js";
 
-const productList = Router();
+const viewsRouter = Router();
 
-productList.get('/', async(req, res, next)=> {
+viewsRouter.get('/', async(req, res, next)=> {
     try {
         const products = await productManager.getProducts();
+        const socket = req.app.get("socket");
+        socket.emit('productsUpdated', products)
         res.render('home', { products });
     } catch (error) {
         next(error);
     }
 })
 
-productList.get('/realtimeproducts', async(req, res, next)=> {
+viewsRouter.get('/realtimeproducts', async(req, res, next)=> {
     try {
-        const products = await productManager.getProducts();
-        res.render('realTimeProducts', { products });
+        res.render('realTimeProducts')
     } catch (error) {
         next(error);
     }
 })
 
-export default productList; 
+export default viewsRouter; 

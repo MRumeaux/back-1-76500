@@ -3,7 +3,7 @@ import { Server } from "socket.io";
 import handlebars from 'express-handlebars';
 import productRouter from "./src/routes/product-router.js";
 import cartRouter from "./src/routes/cart-router.js";
-import productList from "./src/routes/views.router.js";
+import viewsRouter from "./src/routes/views.router.js";
 import { errorHandler } from "./src/middlewares/error-handler.js";
 
 const port = 8080;
@@ -19,23 +19,27 @@ app.set('view engine', 'handlebars');
 
 app.use('/api/products', productRouter);
 app.use('/api/carts', cartRouter);
-app.use('/api/realtimeproducts', productList);
+app.use('/', viewsRouter);
 
 app.use(errorHandler);
 
 const httpServer = app.listen(port, () => console.log(`Servidor escuchando en el puerto ${port}`));
 
 const socketServer = new Server(httpServer);
+app.set('socket', socketServer);
 
-socketServer.on('connection', (socket) => {
+const productList = [];
 
+socketServer.on('connection', async (socket) => {
     console.log(`Usuario conectado ${socket.id}`)
+
     socket.on('disconnect', () => {
         console.log(`Usuario desconectado`)
     })
 
-    socket.on('newProd', (prod) => {
-        socketServer.emit('products', acaVaAlgoADeterminar)
+    socket.on('productsUpdated', (prods) => {
+        productList.push(prods)
+        socketServer.emit('realtimeProducts', productList)
     })
 
 })

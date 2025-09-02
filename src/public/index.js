@@ -1,12 +1,14 @@
 const socket = io();
 
-socket.on('productsUpdated', (products) => {
+const listedProducts = document.getElementById('prods-container')
+
+socket.on('realtimeProducts', (prods) => {
     let infoProducts = ''
-    products.forEach((p) => {
-        infoProducts += `<img class="thumbnails" src={{thumbnails}} alt="">
-            <h2 class="title">{{title}}</h2>
-            <p class="category">{{category}}</p>
-            <p class="price">{{price}}</p>`
+    prods.forEach((p) => {
+        infoProducts += `<img class="thumbnails" src=${p.thumbnails} alt="">
+            <h2 class="title">${p.title}</h2>
+            <p class="category">${p.category}</p>
+            <p class="price">${p.price}</p> </br>`
     });
-    products.innerHTML = infoProducts
+    listedProducts.innerHTML = infoProducts
 })
