@@ -5,6 +5,7 @@ import productRouter from "./src/routes/product-router.js";
 import cartRouter from "./src/routes/cart-router.js";
 import viewsRouter from "./src/routes/views.router.js";
 import { errorHandler } from "./src/middlewares/error-handler.js";
+import { productManager } from "./src/manager/product-manager.js";
 
 const port = 8080;
 const app = express();
@@ -28,7 +29,6 @@ const httpServer = app.listen(port, () => console.log(`Servidor escuchando en el
 const socketServer = new Server(httpServer);
 app.set('socket', socketServer);
 
-const productList = [];
 
 socketServer.on('connection', async (socket) => {
     console.log(`Usuario conectado ${socket.id}`)
@@ -37,9 +37,7 @@ socketServer.on('connection', async (socket) => {
         console.log(`Usuario desconectado`)
     })
 
-    socket.on('productsUpdated', (prods) => {
-        productList.push(prods)
-        socketServer.emit('realtimeProducts', productList)
-    })
+    const products = await productManager.getProducts();
+    socket.emit('productsUpdated', products)
 
 })

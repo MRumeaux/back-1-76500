@@ -2,7 +2,7 @@ const socket = io();
 
 const listedProducts = document.getElementById('prods-container')
 
-socket.on('realtimeProducts', (prods) => {
+socket.on('productsUpdated', (prods) => {
     let infoProducts = ''
     prods.forEach((p) => {
         infoProducts += `<img class="thumbnails" src=${p.thumbnails} alt="">
