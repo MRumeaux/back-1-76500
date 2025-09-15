@@ -16,7 +16,7 @@ class CartManager {
                 return JSON.parse(cart);
             } return [];
         } catch (error) {
-            throw error
+            throw new Error(error);
         }
     }
     
@@ -35,7 +35,7 @@ class CartManager {
             await fs.promises.writeFile(this.path, JSON.stringify(cart));
             return cart;
         } catch (error) {
-            throw error;
+            throw new Error(error);
         }
     }
 
@@ -46,7 +46,7 @@ class CartManager {
             if(!filteredCart) throw new Error("No se ha encontrado un carrito con el ID solicitado"); 
             return filteredCart;
         } catch (error) {
-            throw error;
+            throw new Error(error);
         }
     }
 
@@ -77,7 +77,7 @@ class CartManager {
             await fs.promises.writeFile(this.path, JSON.stringify(cart));
             return seekedCart;
         } catch (error) {
-            throw error;
+            throw new Error(error);
         }
     }
 

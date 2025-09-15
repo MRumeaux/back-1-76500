@@ -10,6 +10,3 @@ export const initMongoDB = async() => {
     }
 }
 
-initMongoDB()
-    .then(()=> console.log('Connected to MongoDB'))
-    .catch((err) => console.log(err))

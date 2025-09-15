@@ -45,7 +45,6 @@ const ProductSchema = new Schema({
         },
         default: [],
     },
-}, { timestamps: true }); // agrega createdAt y updatedAt
+});
 
 export const ProductModel = model("Product", ProductSchema);
-

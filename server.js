@@ -6,6 +6,7 @@ import cartRouter from "./src/routes/cart-router.js";
 import viewsRouter from "./src/routes/views.router.js";
 import { errorHandler } from "./src/middlewares/error-handler.js";
 import { productManager } from "./src/manager/product-manager.js";
+import { initMongoDB } from "./src/config/connect-mongo.js";
 
 const port = 8080;
 const app = express();
@@ -23,6 +24,10 @@ app.use('/api/carts', cartRouter);
 app.use('/', viewsRouter);
 
 app.use(errorHandler);
+
+initMongoDB()
+    .then(()=> console.log('Connected to MongoDB'))
+    .catch((err) => console.log(err))
 
 const httpServer = app.listen(port, () => console.log(`Servidor escuchando en el puerto ${port}`));
 

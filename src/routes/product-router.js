@@ -1,63 +1,12 @@
 import { Router } from "express";
-import { productManager } from "../manager/product-manager.js";
+import { productController } from "../controller/product-controller.js";
 
 const productRouter = Router();
 
-productRouter.get('/', async(req, res, next)=> {
-    try {
-        const products = await productManager.getProducts();
-        res.status(200).json(products);
-    } catch (error) {
-        next(error);
-    }
-})
-
-productRouter.get('/:pid', async(req, res, next) => {
-    try {
-        const {pid} = req.params;
-        const seekedProduct = await productManager.getProductById(pid);
-        res.status(200).json(seekedProduct);
-    } catch (error) {
-        next(error);
-    }
-})
-
-productRouter.post('/', async(req, res, next) => {
-    try {
-        const product = await productManager.addProduct(req.body);
-        res.status(201).json(product);
-        const socket = req.app.get('socket');
-        const products = await productManager.getProducts();
-        socket.emit('productsUpdated', products);
-    } catch (error) {
-        next(error);
-    }
-})
-
-productRouter.put('/:pid', async(req, res, next) => {
-    try {
-        const {pid} = req.params;
-        const updatedProduct = await productManager.updateProduct(req.body, pid);
-        res.status(200).json(updatedProduct);
-        const socket = req.app.get('socket');
-        const products = await productManager.getProducts();
-        socket.emit('productsUpdated', products);
-    } catch (error) {
-        next(error);
-    }
-})
-
-productRouter.delete('/:pid', async(req, res, next) => {
-    try {
-        const {pid} = req.params;
-        const deletedProduct = await productManager.deleteProduct(pid);
-        res.status(200).json(deletedProduct);
-        const socket = req.app.get('socket');
-        const products = await productManager.getProducts();
-        socket.emit('productsUpdated', products);
-    } catch (error) {
-        next(error);
-    }
-})
+productRouter.get('/', productController.getProducts)
+productRouter.get('/:pid', productController.getProductById)
+productRouter.post('/', productController.addProduct)
+productRouter.put('/:pid', productController.updateProduct)
+productRouter.delete('/:pid', productController.deleteProduct)
 
 export default productRouter;
