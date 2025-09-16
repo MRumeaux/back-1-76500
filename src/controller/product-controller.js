@@ -8,8 +8,25 @@ class ProductController {
 
     getProducts = async (req, res, next) => {
         try {
-            const products = await this.repository.getProducts();
-            res.status(200).json(products);
+            const { page, limit, title, sort } = req.query;
+            const response = await this.repository.getProducts(page, limit, title, sort);
+            const nextPage = response.hasNextPage
+                ? `http://localhost:8080/products?page=${response.nextPage}`
+                : null;
+            const prevPage = response.hasPrevPage
+                ? `http://localhost:8080/products?page=${response.hasPrevPage}`
+                : null;
+            res.status(200).json({
+                payload: response.docs,
+                info: {
+                    count: response.totalDocs,
+                    totalPages: response.totalPages,
+                    nextLink: nextPage,
+                    prevLink: prevPage,
+                    hasNextPage: response.hasNextPage,
+                    hasPrevPage: response.hasPrevPage,
+                }
+            })
         } catch (error) {
             next(error);
         }
