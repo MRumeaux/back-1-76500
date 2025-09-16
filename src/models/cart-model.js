@@ -1,9 +1,9 @@
 import { model, Schema } from "mongoose";
 
-const CartSchema = new Schema({
+const cartSchema = new Schema({
     products: [
         {
-            product: {
+            products: {
                 type: Schema.Types.ObjectId,
                 ref: "products",
                 required: true
@@ -17,4 +17,17 @@ const CartSchema = new Schema({
     ]
 });
 
-export const CartModel = new model("cart", CartSchema);
+CartSchema.pre("find", function () {
+    this.populate("products");
+});
+
+CartSchema.pre("findByIdAndUpdate", function () {
+    this.populate("products");
+});
+
+CartSchema.pre("findById", function () {
+    this.populate("products");
+});
+
+
+export const CartModel = model("cart", cartSchema);

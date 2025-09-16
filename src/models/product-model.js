@@ -1,6 +1,6 @@
-import { Schema, model } from "mongoose";
+import mongoose, { Schema, model } from "mongoose";
 
-const ProductSchema = new Schema({
+const productSchema = new Schema({
     title: {
         type: String,
         required: true,
@@ -48,4 +48,6 @@ const ProductSchema = new Schema({
     },
 });
 
-export const ProductModel = model("product", ProductSchema);
+productSchema.plugin(mongoosePaginate);
+
+export const ProductModel = model("product", productSchema);

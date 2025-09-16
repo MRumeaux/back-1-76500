@@ -6,17 +6,20 @@ class ProductManager{
         this.model = model
     }
     
-    getProducts = async() => {
+    getProducts = async(page = 1, limit = 10, name, sort) => {
         try {
-            return await this.model.find();
+            const filter = title ? { 'title': title } : {};
+            let sortOrder = {};
+            if (sort) sortOrder.price = sort === "asc" ? 1 : sort === "desc" ? -1 : null;
+            return await this.model.paginate(filter, {page, limit, sort: sortOrder});
         } catch (error) {
             throw new Error(error);
         }
     }
     
-    getProductById = async (id) => {
+    getProductById = async (pid) => {
             try {
-                return await this.model.findById(id);
+                return await this.model.findById(pid);
             } catch (error) {
                 throw new Error(error);
             }
@@ -31,19 +34,19 @@ class ProductManager{
         }
     }
 
-    updateProduct = async (id, product) => {
+    updateProduct = async (pid, product) => {
         
         try {
-            return await this.model.findByIdAndUpdate(id, product, { new: true });
+            return await this.model.findByIdAndUpdate(pid, product, { new: true });
         } catch (error) {
             throw new Error(error);
         }
     }
 
 
-    deleteProduct = async (id) => {
+    deleteProduct = async (pid) => {
         try {
-            return await this.model.findByIdAndDelete(id)
+            return await this.model.findByIdAndDelete(pid)
         } catch (error) {
             throw new Error(error);
         }

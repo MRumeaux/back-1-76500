@@ -1,4 +1,4 @@
-import { CartModel } from "../models/cart-model.js";
+import { cartModel } from "../models/cart-model.js";
 
 class CartManager {
 
@@ -16,21 +16,13 @@ class CartManager {
     
     createCart = async () => {
         try {
-            return await this.model.create();
+            return await this.model.create({ products: [] });
         } catch (error) {
             throw new Error(error);
         }
     }
-
-    getProductsInCartById = async (cid) => {
-        try {
-            return await this.model.findById(cid);
-        } catch (error) {
-            throw new Error(error);
-        }
-    }
-
-    async addProductToCart(cid, pid){
+    
+    addProductToCart = async (cid, pid) => {
         try {
             const newCart = await this.model.findByIdAndUpdate(
                 cid,
@@ -42,7 +34,15 @@ class CartManager {
             throw new Error(error);
         }
     }
+    
+    getProductsInCartById = async (cid) => {
+        try {
+            return await this.model.findById(cid);
+        } catch (error) {
+            throw new Error(error);
+        }
+    }
 
 }
 
-export const cartManager = new CartManager(CartModel);
+export const cartManager = new CartManager(cartModel);
