@@ -5,6 +5,7 @@ const ProductSchema = new Schema({
         type: String,
         required: true,
         trim: true, // elimina espacios extra
+        index: true
     },
     description: {
         type: String,
@@ -47,4 +48,4 @@ const ProductSchema = new Schema({
     },
 });
 
-export const ProductModel = model("Product", ProductSchema);
+export const ProductModel = model("product", ProductSchema);
