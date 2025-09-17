@@ -6,9 +6,9 @@ class ProductRepository {
         this.manager = manager;
     }
 
-    getProducts = async() => {
+    getProducts = async(limit, page, sort, query) => {
         try {
-            return await this.manager.find();
+            return await this.manager.find(limit, page, sort, query);
         } catch (error) {
             throw new Error(error);
         }
