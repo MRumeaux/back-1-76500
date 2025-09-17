@@ -1,9 +1,18 @@
+import { set } from "mongoose";
 import { cartModel } from "../models/cart-model.js";
 
 class CartManager {
 
     constructor(model){
         this.model = model;
+    }
+    
+    createCart = async () => {
+        try {
+            return await this.model.create({ products: [] });
+        } catch (error) {
+            throw new Error(error);
+        }
     }
 
     getCarts = async () => {
@@ -14,9 +23,20 @@ class CartManager {
         }
     }
     
-    createCart = async () => {
+    getCartById = async (cid) => {
         try {
-            return await this.model.create({ products: [] });
+            return await this.model.findById(cid);
+        } catch (error) {
+            throw new Error(error);
+        }
+    }
+
+    existProductInCart = async (cid, pid) => {
+        try {
+            return await this.model.findOne({
+                _id: cid,
+                products: { $elemMatch: { product: pid } }
+            })
         } catch (error) {
             throw new Error(error);
         }
@@ -24,20 +44,68 @@ class CartManager {
     
     addProductToCart = async (cid, pid) => {
         try {
-            const newCart = await this.model.findByIdAndUpdate(
-                cid,
-                { $push: { pid: pid } },
-                { new: true }
-            );
-            return newCart;
+            const existingProd = await this.existProductInCart(cid, pid);
+            if(existingProd){
+                return await this.model.findOneAndUpdate(
+                    {_id: cid, 'products.product': pid},
+                    { $set: { 'products.$.quantity': existingProd.products[0] + 1 } },
+                    { new: true }
+                )
+            } else {
+                return await this.model.findByIdAndUpdate(
+                    cid,
+                    { $push: { pid: pid } },
+                    { new: true }
+                );
+            }
         } catch (error) {
             throw new Error(error);
         }
     }
-    
-    getProductsInCartById = async (cid) => {
+
+    updateProductsInCart = async (cid, prod) => {
         try {
-            return await this.model.findById(cid);
+            const newProdCart = await this.model.findByIdAndUpdate(
+                cid, prod, { new: true }
+            );
+            return newProdCart;
+        } catch (error) {
+            throw new Error(error);
+        }
+    }
+
+    updateProductQuantityInCart = async (cid, pid, quantity) => {
+        try {
+            const updatedQProdCart = await this.model.findOneAndUpdate(
+                { _id: cid, 'products.product': pid },
+                { $set: { 'products.$.quantity': quantity } },
+                { new: true }
+            );
+            return updatedQProdCart;
+        } catch (error) {
+            throw new Error(error);
+        }
+    }
+
+    deleteProductInCartById = async (cid, pid) => {
+        try {
+            return await this.model.findOneAndUpdate(
+                { _id: cid },
+                { $pull: { products: { product: pid } } },
+                { set: true }
+            );
+        } catch (error) {
+            throw new Error(error);
+        }
+    }
+
+    deleteProductsInCart = async (cid) => {
+        try {
+            const deletedCart = await this.model.findOneAndUpdate(
+                { _id: cid },
+                { $set: { products: [] } },
+                { new: true }
+            );
         } catch (error) {
             throw new Error(error);
         }
