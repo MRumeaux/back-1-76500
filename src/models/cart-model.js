@@ -21,11 +21,19 @@ CartSchema.pre("find", function () {
     this.populate("products");
 });
 
+CartSchema.pre("findById", function () {
+    this.populate("products");
+});
+
 CartSchema.pre("findByIdAndUpdate", function () {
     this.populate("products");
 });
 
-CartSchema.pre("findById", function () {
+CartSchema.pre("findOne", function () {
+    this.populate("products");
+});
+
+CartSchema.pre("findOneAndUpdate", function () {
     this.populate("products");
 });
 
