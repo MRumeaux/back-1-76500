@@ -8,7 +8,7 @@ class ProductManager{
     
     getProducts = async(limit, page, query, sort) => {
         try {
-            const filter = query ? [{ 'category': query }, { 'status': query } ] : {};
+            const filter = query ? { $or: [{ 'category': query }, { 'status': query } ] } : {};
             const selectedPage = page ? page : 1;
             const selectedLimit = limit ? limit : 10;
             let sortOrder = {};
