@@ -24,16 +24,6 @@ export const getCartById = async (cid) => {
         throw new Error(error);
     }
 }
-
-export const existProductInCart = async (cid, pid) => {
-    try {
-        const existingCart = await cartManager.existProductInCart(cid, pid);
-        if (!existingCart) throw new Error("That product is not in the cart")
-        return existingCart;
-    } catch (error) {
-        throw new Error(error);
-    }
-}
     
 export const addProductToCart = async (cid, pid) => {
     try {

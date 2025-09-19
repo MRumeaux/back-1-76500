@@ -1,4 +1,4 @@
-import { productRepository } from "../repositories/product.repository.js";
+import * as productRepository from "../repositories/product.repository.js";
 
 export const getProducts = async (req, res, next) => {
     try {
