@@ -6,14 +6,14 @@ class ProductManager{
         this.model = model
     }
     
-    getProducts = async(limit, page, sort, query) => {
+    getProducts = async(limit, page, query, sort) => {
         try {
-            const filter = query ? { 'category': query } : {};
+            const filter = query ? [{ 'category': query }, { 'status': query } ] : {};
             const selectedPage = page ? page : 1;
             const selectedLimit = limit ? limit : 10;
             let sortOrder = {};
             if (sort) sortOrder.price = sort === "asc" ? 1 : sort === "desc" ? -1 : null;
-            return await this.model.paginate(filter, {selectedPage, selectedLimit, sort: sortOrder});
+            return await this.model.paginate(filter, {page: selectedPage, limit: selectedLimit, sort: sortOrder});
         } catch (error) {
             throw new Error(error);
         }
