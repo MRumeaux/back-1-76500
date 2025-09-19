@@ -1,62 +1,49 @@
 import { productManager } from "../manager/product-manager.js";
 
-class ProductRepository {
-
-    constructor(manager){
-        this.manager = manager;
+export const getProducts = async(limit, page, sort, query) => {
+    try {
+        return await productManager.find(limit, page, sort, query);
+    } catch (error) {
+        throw new Error(error);
     }
-
-    getProducts = async(limit, page, sort, query) => {
-        try {
-            return await this.manager.find(limit, page, sort, query);
-        } catch (error) {
-            throw new Error(error);
-        }
-    }
-    
-    getProductById = async (pid) => {
-            try {
-                const filteredProduct = await this.manager.findById(pid);
-                if (!filteredProduct) throw new Error("Product not found", 404);
-                return filteredProduct;
-            } catch (error) {
-                throw new Error(error);
-            }
-        }
-    
-    addProduct = async (product) => {
-        
-        try {
-            const newProduct = await this.manager.create(product);
-            if (!newProduct) throw new Error("Product could not be posted", 404);
-            return newProduct;
-        } catch (error) {
-            throw new Error(error);
-        }
-    }
-
-    updateProduct = async (pid, product) => {
-        
-        try {
-            const updatedProduct = await this.manager.findByIdAndUpdate(pid, product, { new: true });
-            if (!updatedProduct) throw new Error("Product was not updated", 404);
-            return updatedProduct;
-        } catch (error) {
-            throw new Error(error);
-        }
-    }
-
-
-    deleteProduct = async (pid) => {
-        try {
-            const deletedProduct = await this.manager.findByIdAndDelete(pid);
-            if (!deletedProduct) throw new Error("Product was not deleted", 404);
-            return deletedProduct;
-        } catch (error) {
-            throw new Error(error);
-        }
-    }
-
 }
 
-export const productRepository = new ProductRepository(productManager)
+export const getProductById = async (pid) => {
+        try {
+            const filteredProduct = await productManager.findById(pid);
+            if (!filteredProduct) throw new Error("Product not found", 404);
+            return filteredProduct;
+        } catch (error) {
+            throw new Error(error);
+        }
+    }
+
+export const addProduct = async (product) => {
+    
+    try {
+        const newProduct = await productManager.create(product);
+        if (!newProduct) throw new Error("Product could not be posted", 404);
+        return newProduct;
+    } catch (error) {
+        throw new Error(error);
+    }
+}
+export const updateProduct = async (pid, product) => {
+    
+    try {
+        const updatedProduct = await productManager.findByIdAndUpdate(pid, product, { new: true });
+        if (!updatedProduct) throw new Error("Product was not updated", 404);
+        return updatedProduct;
+    } catch (error) {
+        throw new Error(error);
+    }
+}
+export const deleteProduct = async (pid) => {
+    try {
+        const deletedProduct = await productManager.findByIdAndDelete(pid);
+        if (!deletedProduct) throw new Error("Product was not deleted", 404);
+        return deletedProduct;
+    } catch (error) {
+        throw new Error(error);
+    }
+}
