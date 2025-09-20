@@ -2,7 +2,7 @@ import { productManager } from "../manager/product-manager.js";
 
 export const getProducts = async(limit, page, sort, query) => {
     try {
-        return await productManager.find(limit, page, sort, query);
+        return await productManager.getProducts(limit, page, sort, query);
     } catch (error) {
         throw new Error(error);
     }
@@ -10,7 +10,7 @@ export const getProducts = async(limit, page, sort, query) => {
 
 export const getProductById = async (pid) => {
         try {
-            const filteredProduct = await productManager.findById(pid);
+            const filteredProduct = await productManager.getProductById(pid);
             if (!filteredProduct) throw new Error("Product not found", 404);
             return filteredProduct;
         } catch (error) {
@@ -21,7 +21,7 @@ export const getProductById = async (pid) => {
 export const addProduct = async (product) => {
     
     try {
-        const newProduct = await productManager.create(product);
+        const newProduct = await productManager.addProduct(product);
         if (!newProduct) throw new Error("Product could not be posted", 404);
         return newProduct;
     } catch (error) {
@@ -31,7 +31,7 @@ export const addProduct = async (product) => {
 export const updateProduct = async (pid, product) => {
     
     try {
-        const updatedProduct = await productManager.findByIdAndUpdate(pid, product, { new: true });
+        const updatedProduct = await productManager.updateProduct(pid, product, { new: true });
         if (!updatedProduct) throw new Error("Product was not updated", 404);
         return updatedProduct;
     } catch (error) {
@@ -40,7 +40,7 @@ export const updateProduct = async (pid, product) => {
 }
 export const deleteProduct = async (pid) => {
     try {
-        const deletedProduct = await productManager.findByIdAndDelete(pid);
+        const deletedProduct = await productManager.deleteProduct(pid);
         if (!deletedProduct) throw new Error("Product was not deleted", 404);
         return deletedProduct;
     } catch (error) {
