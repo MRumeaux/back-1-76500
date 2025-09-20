@@ -1,4 +1,3 @@
-import { set } from "mongoose";
 import { cartModel } from "../models/cart-model.js";
 
 class CartManager {
@@ -47,14 +46,14 @@ class CartManager {
             const existingProd = await this.existProductInCart(cid, pid);
             if(existingProd){
                 return await this.model.findOneAndUpdate(
-                    {_id: cid, 'products.product': pid},
-                    { $set: { 'products.$.quantity': existingProd.products[0] + 1 } },
+                    { _id: cid, 'products.product': pid },
+                    { $inc: { 'products.$.quantity': 1 } },
                     { new: true }
                 )
             } else {
                 return await this.model.findByIdAndUpdate(
                     cid,
-                    { $push: { pid: pid } },
+                    { $push: { products: { product: pid, quantity: 1 } } },
                     { new: true }
                 );
             }
@@ -92,7 +91,7 @@ class CartManager {
             return await this.model.findOneAndUpdate(
                 { _id: cid },
                 { $pull: { products: { product: pid } } },
-                { set: true }
+                { new: true }
             );
         } catch (error) {
             throw new Error(error);
@@ -106,6 +105,7 @@ class CartManager {
                 { $set: { products: [] } },
                 { new: true }
             );
+            return deletedCart;
         } catch (error) {
             throw new Error(error);
         }

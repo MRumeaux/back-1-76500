@@ -3,9 +3,9 @@ import { model, Schema } from "mongoose";
 const cartSchema = new Schema({
     products: [
         {
-            products: {
+            product: {
                 type: Schema.Types.ObjectId,
-                ref: "products",
+                ref: "product",
                 required: true
             },
             quantity: {
@@ -18,23 +18,23 @@ const cartSchema = new Schema({
 });
 
 CartSchema.pre("find", function () {
-    this.populate("products");
+    this.populate("products.product");
 });
 
 CartSchema.pre("findById", function () {
-    this.populate("products");
+    this.populate("products.product");
 });
 
 CartSchema.pre("findByIdAndUpdate", function () {
-    this.populate("products");
+    this.populate("products.product");
 });
 
 CartSchema.pre("findOne", function () {
-    this.populate("products");
+    this.populate("products.product");
 });
 
 CartSchema.pre("findOneAndUpdate", function () {
-    this.populate("products");
+    this.populate("products.product");
 });
 
 

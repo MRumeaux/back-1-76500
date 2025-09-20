@@ -13,16 +13,14 @@ export const getProducts = async (req, res, next) => {
         res.status(200).json({
             status: "success",
             payload: response.docs,
-            info: {
-                totalPages: response.totalPages,
-                prevPage: response.page > 1 ? response.page - 1 : null,
-                nextPage: response.page * response.limit < response.totalDocs ? response.page + 1 : null,
-                prevLink: prevPage,
-                hasNextPage: response.hasNextPage,
-                hasPrevPage: response.hasPrevPage,
-                page: response.page,
-                nextLink: nextPage
-            }
+            totalPages: response.totalPages,
+            prevPage: response.page > 1 ? response.page - 1 : null,
+            nextPage: response.page * response.limit < response.totalDocs ? response.page + 1 : null,
+            prevLink: prevPage,
+            hasNextPage: response.hasNextPage,
+            hasPrevPage: response.hasPrevPage,
+            page: response.page,
+            nextLink: nextPage
         })
     } catch (error) {
         next(error);
