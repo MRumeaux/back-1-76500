@@ -2,13 +2,13 @@ import * as productRepository from "../repositories/product.repository.js";
 
 export const getProducts = async (req, res, next) => {
     try {
-        const { page, limit, title, sort } = req.query;
-        const response = await productRepository.getProducts(page, limit, title, sort);
+        const { page, limit, query, sort } = req.query;
+        const response = await productRepository.getProducts(page, limit, query, sort);
         const nextPage = response.hasNextPage
             ? `http://localhost:8080/products?page=${response.nextPage}`
             : null;
         const prevPage = response.hasPrevPage
-            ? `http://localhost:8080/products?page=${response.hasPrevPage}`
+            ? `http://localhost:8080/products?page=${response.prevPage}`
             : null;
         res.status(200).json({
             status: "success",
@@ -17,10 +17,10 @@ export const getProducts = async (req, res, next) => {
             prevPage: response.page > 1 ? response.page - 1 : null,
             nextPage: response.page * response.limit < response.totalDocs ? response.page + 1 : null,
             prevLink: prevPage,
+            nextLink: nextPage,
             hasNextPage: response.hasNextPage,
             hasPrevPage: response.hasPrevPage,
-            page: response.page,
-            nextLink: nextPage
+            page: response.page
         })
     } catch (error) {
         next(error);

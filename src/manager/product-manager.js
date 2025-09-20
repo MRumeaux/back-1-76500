@@ -6,7 +6,7 @@ class ProductManager{
         this.model = model
     }
     
-    getProducts = async(limit, page, query, sort) => {
+    getProducts = async(page, limit, query, sort) => {
         try {
             const parsedQuery = JSON.parse(query);
             const filter = query ? { $or: [{ 'category': parsedQuery }, { 'status': parsedQuery } ] } : {};

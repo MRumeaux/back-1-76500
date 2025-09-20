@@ -17,23 +17,23 @@ const cartSchema = new Schema({
     ]
 });
 
-CartSchema.pre("find", function () {
+cartSchema.pre("find", function () {
     this.populate("products.product");
 });
 
-CartSchema.pre("findById", function () {
+cartSchema.pre("findById", function () {
     this.populate("products.product");
 });
 
-CartSchema.pre("findByIdAndUpdate", function () {
+cartSchema.pre("findByIdAndUpdate", function () {
     this.populate("products.product");
 });
 
-CartSchema.pre("findOne", function () {
+cartSchema.pre("findOne", function () {
     this.populate("products.product");
 });
 
-CartSchema.pre("findOneAndUpdate", function () {
+cartSchema.pre("findOneAndUpdate", function () {
     this.populate("products.product");
 });
 
