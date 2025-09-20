@@ -8,10 +8,14 @@ class ProductManager{
     
     getProducts = async(page, limit, query, sort) => {
         try {
-            const parsedQuery = JSON.parse(query);
-            const filter = query ? { $or: [{ 'category': parsedQuery }, { 'status': parsedQuery } ] } : {};
-            const selectedPage = page ? page : 1;
-            const selectedLimit = limit ? limit : 10;
+            let filter = {};
+            if(query === "true" || query === "false"){
+                filter = { status: JSON.parse(query) };
+            } else {
+                filter = { category: query };
+            }
+            const selectedPage = page ? parseInt(page) : 1;
+            const selectedLimit = limit ? parseInt(limit) : 10;
             let sortOrder = {};
             if (sort) sortOrder.price = sort === "asc" ? 1 : sort === "desc" ? -1 : null;
             return await this.model.paginate(filter, {page: selectedPage, limit: selectedLimit, sort: sortOrder});

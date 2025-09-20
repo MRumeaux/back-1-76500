@@ -38,4 +38,4 @@ cartSchema.pre("findOneAndUpdate", function () {
 });
 
 
-export const CartModel = model("cart", cartSchema);
+export const cartModel = model("cart", cartSchema);
