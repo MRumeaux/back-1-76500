@@ -1,0 +1,16 @@
+<h2>Pruebo render</h2>
+{{#if product.length}}
+    {{#each product}}
+        <div>
+            <img class="thumbnails" src={{thumbnails}} alt="">
+            <h2 class="title">{{title}}</h2>
+            <p class="description">{{description}}</p>
+            <p class="code">{{code}}</p>
+            <p class="category">{{category}}</p>
+            <p class="price">{{price}}</p>
+            <button id="add-to-cart">Agregar al carrito</button>
+        </div>
+    {{/each}}
+{{else}}
+<p>No se pudo obtener información del producto seleccionado</p>
+{{/if}}

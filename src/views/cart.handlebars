@@ -1,0 +1,19 @@
+<h2>Pruebo render</h2>
+{{#if products.length}}
+    <div>
+    {{#each products}}
+        <div>
+            <img class="thumbnails" src={{thumbnails}} alt="">
+            <h2 class="title">{{title}}</h2>
+            <p class="category">{{category}}</p>
+            <p class="quantity">{{quantity}}</p>
+            <p class="price">Precio unitario: {{price}}</p>
+            <p class="price">Subtotal producto: {{quantity * price}}</p>
+        </div>
+    {{/each}}
+    <p class="price"></p>
+    </div>
+    <p class="price">Subtotal producto: {{}} </p>
+{{else}}
+<p>No se pudo obtener información del carrito seleccionado</p>
+{{/if}}

@@ -1,0 +1,14 @@
+<h2>Pruebo render</h2>
+{{#if products.length}}
+    {{#each products}}
+        <div>
+            <img class="thumbnails" src={{thumbnails.[0]}} alt="{{title}}">
+            <h2 class="title">{{title}}</h2>
+            <p class="price">Precio: {{price}}</p>
+            <a href="/products/{{_id}}">Ver más detalles</a>
+            <a href="/carts/ID_DE_PRUEBA">Agregar al carrito</a>
+        </div>
+    {{/each}}
+{{else}}
+<p>No se encontraron productos momentáneamente</p>
+{{/if}}
