@@ -28,6 +28,7 @@ viewsRouter.get('/carts/:cid', async(req, res, next)=> {
     try {
         const { cid } = req.params;
         const cart = await cartRepository.getCartById(cid);
+        const total = cart.products.reduce((acc, prods) => acc + (prods.product.price * prods.quantity), 0);
         res.render('cart', { cartId: cart._id, products: cart.products });
     } catch (error) {
         next(error);

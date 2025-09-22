@@ -1,16 +1,15 @@
-<h2>Pruebo render</h2>
-{{#if product.length}}
-    {{#each product}}
-        <div>
-            <img class="thumbnails" src={{thumbnails}} alt="">
-            <h2 class="title">{{title}}</h2>
-            <p class="description">{{description}}</p>
-            <p class="code">{{code}}</p>
-            <p class="category">{{category}}</p>
-            <p class="price">{{price}}</p>
-            <button id="add-to-cart">Agregar al carrito</button>
-        </div>
-    {{/each}}
+<h2>Detalle del producto</h2>
+{{#if product}}
+    <div>
+        <img class="thumbnails" src="{{product.thumbnails.[0]}}" alt="{{product.title}}">
+        <h2 class="title">{{product.title}}</h2>
+        <p class="description">Descripción: {{product.description}}</p>
+        <p class="code">Código de producto: {{product.code}}</p>
+        <p class="category">Categoría: {{product.category}}</p>
+        <p class="price">Precio unitario: ${{product.price}}</p>
+        <a href="/carts/{{defaultCartId}}">Agregar al carrito</a>
+        <a href="/products">Volver al listado</a>
+    </div>
 {{else}}
 <p>No se pudo obtener información del producto seleccionado</p>
 {{/if}}

@@ -1,14 +1,25 @@
-<h2>Pruebo render</h2>
+<h2>Listado de productos</h2>
 {{#if products.length}}
     {{#each products}}
         <div>
             <img class="thumbnails" src={{thumbnails.[0]}} alt="{{title}}">
             <h2 class="title">{{title}}</h2>
-            <p class="price">Precio: {{price}}</p>
+            <p class="category">Categoria: {{category}}</p>
+            <p class="price">Precio unitario: S{{price}}</p>
             <a href="/products/{{_id}}">Ver más detalles</a>
-            <a href="/carts/ID_DE_PRUEBA">Agregar al carrito</a>
+            <a href="/carts/{{defaultCartId}}">Agregar al carrito</a>
         </div>
+        <br>
     {{/each}}
+    <div>
+        {{#if hasPrevPage}}
+            <a href="/products?page={{prevPage}}">Anterior</a>
+        {{/if}}
+        <p>Hoja {{page}} de {{totalPages}}</p>
+        {{#if hasNextPage}}
+            <a href="/products?page={{nextPage}}">Siguiente</a>
+        {{/if}}
+    </div>
 {{else}}
 <p>No se encontraron productos momentáneamente</p>
 {{/if}}
