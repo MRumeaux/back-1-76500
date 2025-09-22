@@ -9,15 +9,18 @@ class ProductManager{
     getProducts = async(page, limit, query, sort) => {
         try {
             let filter = {};
-            if(query === "true" || query === "false"){
-                filter = { status: JSON.parse(query) };
-            } else {
-                filter = { category: query };
+            if (query){
+                if(query === "true" || query === "false"){
+                    filter = { status: JSON.parse(query) };
+                } else {
+                    filter = { category: query };
+                }
             }
             const selectedPage = page ? parseInt(page) : 1;
             const selectedLimit = limit ? parseInt(limit) : 10;
             let sortOrder = {};
             if (sort) sortOrder.price = sort === "asc" ? 1 : sort === "desc" ? -1 : null;
+            console.log({query, filter, page: selectedPage, limit: selectedLimit})
             return await this.model.paginate(filter, {page: selectedPage, limit: selectedLimit, sort: sortOrder});
         } catch (error) {
             throw new Error(error);

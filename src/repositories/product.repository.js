@@ -1,8 +1,8 @@
 import { productManager } from "../manager/product-manager.js";
 
-export const getProducts = async(limit, page, sort, query) => {
+export const getProducts = async(page, limit, query, sort) => {
     try {
-        return await productManager.getProducts(limit, page, sort, query);
+        return await productManager.getProducts(page, limit, query, sort);
     } catch (error) {
         throw new Error(error);
     }
