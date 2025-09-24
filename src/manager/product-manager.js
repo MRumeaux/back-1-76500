@@ -21,7 +21,7 @@ class ProductManager{
             let sortOrder = {};
             if (sort) sortOrder.price = sort === "asc" ? 1 : sort === "desc" ? -1 : null;
             console.log({query, filter, page: selectedPage, limit: selectedLimit})
-            return await this.model.paginate(filter, {page: selectedPage, limit: selectedLimit, sort: sortOrder});
+            return await this.model.paginate(filter, {page: selectedPage, limit: selectedLimit, sort: sortOrder, lean: true});
         } catch (error) {
             throw new Error(error);
         }
@@ -29,7 +29,7 @@ class ProductManager{
     
     getProductById = async (pid) => {
             try {
-                return await this.model.findById(pid);
+                return await this.model.findById(pid).lean();
             } catch (error) {
                 throw new Error(error);
             }

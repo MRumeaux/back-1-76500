@@ -24,7 +24,7 @@ class CartManager {
     
     getCartById = async (cid) => {
         try {
-            return await this.model.findById(cid);
+            return await this.model.findById(cid).lean();
         } catch (error) {
             throw new Error(error);
         }
