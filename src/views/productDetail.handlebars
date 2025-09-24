@@ -1,15 +1,21 @@
-<h2>Detalle del producto</h2>
-{{#if product}}
-    <div>
-        <img class="thumbnails" src="{{product.thumbnails.[0]}}" alt="{{product.title}}">
-        <h2 class="title">{{product.title}}</h2>
-        <p class="description">Descripción: {{product.description}}</p>
-        <p class="code">Código de producto: {{product.code}}</p>
-        <p class="category">Categoría: {{product.category}}</p>
-        <p class="price">Precio unitario: ${{product.price}}</p>
-        <a href="/carts/{{defaultCartId}}">Agregar al carrito</a>
-        <a href="/products">Volver al listado</a>
-    </div>
-{{else}}
-<p>No se pudo obtener información del producto seleccionado</p>
-{{/if}}
+<div class="product-detail">
+    {{#if product}}
+        <div class="detail-card">
+            <img class="detail-img" src="{{product.thumbnails.[0]}}" alt="{{product.title}}">
+            <div class="detail-info">
+                <h2>{{product.title}}</h2>
+                <p class="description">{{product.description}}</p>
+                <p><strong>Código:</strong> {{product.code}}</p>
+                <p><strong>Categoría:</strong> {{product.category}}</p>
+                <p><strong>Stock:</strong> {{product.stock}}</p>
+                <p class="price">$ {{product.price}}</p>
+                <div class="card-actions">
+                    <a class="btn btn-primary" href="/carts/CartID">Agregar al carrito</a>
+                    <a class="btn btn-secondary" href="/products">Volver al listado</a>
+                </div>
+            </div>
+        </div>
+    {{else}}
+        <p>No se pudo obtener información del producto seleccionado</p>
+    {{/if}}
+</div>

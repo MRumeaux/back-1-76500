@@ -11,15 +11,6 @@ initMongoDB()
     .then(()=> console.log('Connected to MongoDB'))
     .catch((err) => console.log(err))
 
-let defaultCartId = null;
-
-const init = async () => {
-    const newCart = await cartManager.createCart();
-    defaultCartId = newCart._id.toString();
-};
-
-init();
-
 const port = 8080;
 const app = express();
 
@@ -31,13 +22,6 @@ app.engine('handlebars', handlebars.engine());
 app.set('views', `${process.cwd()}/src/views`);
 app.set('view engine', 'handlebars');
 
-app.use((res, req, next) => {
-    try {
-        res.locals.defaultCartId = defaultCartId;
-    } catch (error) {
-        next(error)
-    }
-})
 app.use('/api/products', productRouter);
 app.use('/api/carts', cartRouter);
 app.use('/', viewsRouter);

@@ -4,16 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tutienda</title>
-    <!--<link rel="stylesheet" href="css/style.css">-->
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
     <header>
-        <nav>
-            <a href="/products">Productos</a>
-            <a href="/carts/{{defaultCartId}}">Mi carrito</a>
+        <nav class="navbar">
+        <h1 class="logo">Tutienda</h1>
+            <ul class="nav-links">
+                <li><a href="/products">Productos</a></li>
+                <li><a href="/carts/{{defaultCartId}}">Mi carrito</a></li>
+            </ul>
         </nav>
     </header>
-    {{{body}}}
+
+    <main>
+        {{{body}}}
+    </main>
 </body>
 </html>
-
