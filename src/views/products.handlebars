@@ -11,7 +11,7 @@
                 <p class="stock">Stock: {{stock}}</p>
                 <div class="card-actions">
                     <a class="btn btn-secondary" href="/products/{{_id}}">Ver detalles</a>
-                    <button class="btn btn-primary" id="add-cart">Agregar al carrito</button>
+                    <button class="btn btn-primary add-cart" data-id="{{_id}}">Agregar al carrito</button>
                 </div>
         </div>
         {{/each}}
