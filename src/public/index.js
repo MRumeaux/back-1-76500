@@ -23,8 +23,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const cartId = localStorage.getItem("cartId");
     if (cartId) {
         cartLink.href = `/carts/${cartId}`;
-    } else {
-        cartLink.href = "/carts";
     }
 
 });
